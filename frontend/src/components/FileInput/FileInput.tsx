@@ -47,6 +47,7 @@ const FileInput: React.FC<Props> = ({
   return (
     <>
       <input
+        required
         style={{ display: 'none' }}
         type='file'
         accept='image/*'
@@ -59,6 +60,7 @@ const FileInput: React.FC<Props> = ({
         <Grid item xs>
           <TextField
             fullWidth
+            required
             inputProps={{ readOnly: true }}
             label={label}
             value={fileName}

@@ -1,6 +1,7 @@
 import { Route, Routes } from 'react-router-dom';
 import Appbar from './components/Appbar/Appbar';
 import NotFound from './components/NotFound/NotFound';
+import Register from './containers/Register/Register';
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
       <main>
         <Routes>
           <Route path='/' element='Home' />
+          <Route path='/register' element={<Register />} />
           <Route path='*' element={<NotFound />} />
         </Routes>
       </main>
