@@ -51,3 +51,14 @@ export const fetchGalleryAuthor = createAsyncThunk<Author, string>(
     }
   }
 );
+
+export const deletePhoto = createAsyncThunk<void, string>(
+  'photos/deleteOne',
+  async (id) => {
+    try {
+      await axiosApi.delete('/photos/' + id);
+    } catch (e) {
+      throw e;
+    }
+  }
+);

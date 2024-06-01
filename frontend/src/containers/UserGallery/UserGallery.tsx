@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import {
+  deletePhoto,
   fetchGalleryAuthor,
   fetchPhotos,
 } from '../../store/photos/photosThunks';
@@ -15,6 +16,7 @@ import { apiUrl } from '../../constants';
 import PhotoDialog from '../../components/Dialog/Dialog';
 import CollectionsIcon from '@mui/icons-material/Collections';
 import { selectUser } from '../../store/users/usersSlice';
+import { LoadingButton } from '@mui/lab';
 
 const UserGallery: React.FC = () => {
   const [searchParams, _setSearchParams] = useSearchParams();
@@ -29,7 +31,8 @@ const UserGallery: React.FC = () => {
     _id: '',
     displayName: '',
   });
-  
+  const [disabledBtn, setDisabledBtn] = useState('');
+
   const getPhotosByAuthor = async () => {
     const author = searchParams.get('author');
     if (author) {
@@ -46,6 +49,16 @@ const UserGallery: React.FC = () => {
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const onPhotoDelete = async (id: string) => {
+    let adminConfirm = confirm('Delete this cocktail?');
+    if (adminConfirm) {
+      setDisabledBtn(id);
+      await dispatch(deletePhoto(id));
+      setDisabledBtn('');
+      void getPhotosByAuthor();
+    }
   };
 
   useEffect(() => {
@@ -87,6 +100,17 @@ const UserGallery: React.FC = () => {
               <Typography variant='body1' sx={{ fontWeight: '600', mt: 0.5 }}>
                 {photo.title}
               </Typography>
+              {user?.role === 'admin' && (
+                <LoadingButton
+                  variant='outlined'
+                  color='error'
+                  sx={{ mt: 1 }}
+                  onClick={() => onPhotoDelete(photo._id)}
+                  loading={photo._id === disabledBtn}
+                >
+                  delete
+                </LoadingButton>
+              )}
             </Grid>
           ))}
           <PhotoDialog open={open} onClose={handleClose} photo={photoUrl} />
