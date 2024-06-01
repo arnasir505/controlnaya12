@@ -8,6 +8,16 @@ export interface User {
   googleID?: string;
 }
 
+export interface Photo {
+  _id: string;
+  title: string;
+  image: string;
+  author: {
+    _id: string;
+    displayName: string;
+  };
+}
+
 export interface RegisterMutation {
   email: string;
   displayName: string;

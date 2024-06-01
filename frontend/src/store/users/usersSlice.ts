@@ -84,9 +84,6 @@ export const usersSlice = createSlice({
   },
 });
 
-export const usersReducer = usersSlice.reducer;
-export const { unsetUser } = usersSlice.actions;
-
 export const selectUser = (state: RootState) => state.users.user;
 export const selectRegisterLoading = (state: RootState) =>
   state.users.registerLoading;
@@ -97,3 +94,6 @@ export const selectLoginLoading = (state: RootState) =>
 export const selectLoginError = (state: RootState) => state.users.loginError;
 export const selectLogoutLoading = (state: RootState) =>
   state.users.logoutLoading;
+
+export const usersReducer = usersSlice.reducer;
+export const { unsetUser } = usersSlice.actions;
