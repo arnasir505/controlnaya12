@@ -1,4 +1,5 @@
 public/images/*
+public/avatars/*
 
 # compiled output
 /dist
