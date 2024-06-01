@@ -10,6 +10,7 @@ import Spinner from '../../components/Spinner/Spinner';
 import { apiUrl } from '../../constants';
 import CollectionsIcon from '@mui/icons-material/Collections';
 import PhotoDialog from '../../components/Dialog/Dialog';
+import { Link } from 'react-router-dom';
 
 const Home: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -17,8 +18,9 @@ const Home: React.FC = () => {
   const loading = useAppSelector(selectPhotosLoading);
   const [open, setOpen] = useState(false);
   const [photoUrl, setPhotoUrl] = useState('');
+
   const getPhotos = async () => {
-    await dispatch(fetchPhotos());
+    await dispatch(fetchPhotos(null));
   };
 
   const handleClickOpen = (url: string) => {
@@ -64,7 +66,13 @@ const Home: React.FC = () => {
               {photo.title}
             </Typography>
             <Typography variant='body2' sx={{ color: '#818181' }}>
-              by {photo.author.displayName}
+              by{' '}
+              <Link
+                to={`/gallery?author=${photo.author._id}`}
+                style={{ color: 'inherit' }}
+              >
+                {photo.author.displayName}
+              </Link>
             </Typography>
           </Grid>
         ))}

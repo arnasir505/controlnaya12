@@ -40,7 +40,10 @@ photosRouter.get('/', async (req, res, next) => {
       if (!mongoose.Types.ObjectId.isValid(authorID.toString())) {
         return res.status(422).send({ error: 'Invalid author!' });
       }
-      const photos = await Photo.find({ author: authorID.toString() });
+      const photos = await Photo.find({ author: authorID.toString() }).populate(
+        'author',
+        'displayName'
+      );
       return res.send(photos);
     }
     const photos = await Photo.find().populate('author', 'displayName');
