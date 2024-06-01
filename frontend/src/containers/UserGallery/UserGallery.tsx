@@ -4,6 +4,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import {
   deletePhoto,
+  deletePhotoByUser,
   fetchGalleryAuthor,
   fetchPhotos,
 } from '../../store/photos/photosThunks';
@@ -61,6 +62,16 @@ const UserGallery: React.FC = () => {
     }
   };
 
+  const onPhotoDeleteByUser = async (id: string) => {
+    let userConfirm = confirm('Delete this photo?');
+    if (userConfirm) {
+      setDisabledBtn(id);
+      await dispatch(deletePhotoByUser(id));
+      setDisabledBtn('');
+      void getPhotosByAuthor();
+    }
+  };
+
   useEffect(() => {
     void getPhotosByAuthor();
   }, []);
@@ -106,6 +117,17 @@ const UserGallery: React.FC = () => {
                   color='error'
                   sx={{ mt: 1 }}
                   onClick={() => onPhotoDelete(photo._id)}
+                  loading={photo._id === disabledBtn}
+                >
+                  delete
+                </LoadingButton>
+              )}
+              {user?.role === 'user' && galleryAuthor._id === user._id && (
+                <LoadingButton
+                  variant='outlined'
+                  color='error'
+                  sx={{ mt: 1 }}
+                  onClick={() => onPhotoDeleteByUser(photo._id)}
                   loading={photo._id === disabledBtn}
                 >
                   delete

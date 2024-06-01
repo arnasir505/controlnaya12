@@ -62,3 +62,14 @@ export const deletePhoto = createAsyncThunk<void, string>(
     }
   }
 );
+
+export const deletePhotoByUser = createAsyncThunk<void, string>(
+  'photos/deleteOneByUser',
+  async (id) => {
+    try {
+      await axiosApi.delete('/photos/' + id + '/byUser');
+    } catch (e) {
+      throw e;
+    }
+  }
+);

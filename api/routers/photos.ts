@@ -53,6 +53,23 @@ photosRouter.get('/', async (req, res, next) => {
   }
 });
 
+photosRouter.delete('/:id/byUser', auth, async (req: RequestWithUser, res, next) => {
+  try {
+    const id = req.params.id;
+    const photo = await Photo.findOneAndDelete({
+      _id: id,
+      author: req.user?._id,
+    });
+    if (!photo) {
+      return res.status(404).send({ error: 'Not Found' });
+    }
+    clearImage(photo.image);
+    return res.send({ message: 'Deleted' });
+  } catch (e) {
+    next(e);
+  }
+});
+
 photosRouter.delete('/:id', auth, permit('admin'), async (req, res, next) => {
   try {
     const id = req.params.id;
