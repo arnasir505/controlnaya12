@@ -55,7 +55,7 @@ const UserMenu: React.FC<Props> = ({ user }) => {
         keepMounted
       >
         <Link
-          to='/my-cocktails'
+          to={`/gallery?author=${user._id}`}
           style={{ color: 'inherit', textDecoration: 'none' }}
         >
           <MenuItem>My Gallery</MenuItem>
