@@ -47,7 +47,6 @@ const FileInput: React.FC<Props> = ({
   return (
     <>
       <input
-        required
         style={{ display: 'none' }}
         type='file'
         accept='image/*'

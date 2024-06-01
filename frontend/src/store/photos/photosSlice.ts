@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { Photo, ValidationError } from '../../types';
-import { fetchPhotos } from './photosThunks';
+import { addNewPhoto, fetchPhotos } from './photosThunks';
 import { RootState } from '../../app/store';
 
 interface PhotosState {
@@ -36,6 +36,18 @@ const photosSlice = createSlice({
       .addCase(fetchPhotos.rejected, (state) => {
         state.photosLoading = false;
         state.photosError = true;
+      });
+    builder
+      .addCase(addNewPhoto.pending, (state) => {
+        state.addPhotoLoading = true;
+        state.addPhotoError = null;
+      })
+      .addCase(addNewPhoto.fulfilled, (state) => {
+        state.addPhotoLoading = false;
+      })
+      .addCase(addNewPhoto.rejected, (state, { payload: error }) => {
+        state.addPhotoLoading = false;
+        state.addPhotoError = error || null;
       });
   },
 });

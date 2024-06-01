@@ -18,6 +18,11 @@ export interface Photo {
   };
 }
 
+export interface PhotoMutation {
+  title: string;
+  image: File | null;
+}
+
 export interface RegisterMutation {
   email: string;
   displayName: string;

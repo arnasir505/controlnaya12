@@ -1,6 +1,6 @@
 import { Box, Button, Container, Grid, Icon, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { fetchPhotos } from '../../store/photos/photosThunks';
 import {
@@ -15,6 +15,7 @@ import { selectUser } from '../../store/users/usersSlice';
 
 const UserGallery: React.FC = () => {
   const [searchParams, _setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const photos = useAppSelector(selectPhotos);
   const loading = useAppSelector(selectPhotosLoading);
@@ -58,7 +59,12 @@ const UserGallery: React.FC = () => {
             {photos[0].author.displayName}'s Gallery
           </Typography>
           {photos[0].author._id === user?._id ? (
-            <Button variant='outlined'>Upload new photo</Button>
+            <Button
+              variant='outlined'
+              onClick={() => navigate('/photos/new')}
+            >
+              Upload new photo
+            </Button>
           ) : null}
         </Box>
         <Grid
