@@ -36,7 +36,7 @@ usersRouter.post(
       }
       next(error);
     }
-  }
+  },
 );
 
 usersRouter.post('/sessions', async (req, res, next) => {
@@ -122,7 +122,7 @@ usersRouter.get('/:id', async (req, res, next) => {
         role: 0,
         avatar: 0,
         googleID: 0,
-      }
+      },
     );
     if (!user) return res.status(404).send({ error: 'Not Found.' });
     return res.send(user);

@@ -10,7 +10,7 @@ export interface RequestWithUser extends Request {
 const auth = async (
   req: RequestWithUser,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   const headerValue = req.get('Authorization');
 

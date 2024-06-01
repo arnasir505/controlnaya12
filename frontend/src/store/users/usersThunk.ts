@@ -49,7 +49,7 @@ export const login = createAsyncThunk<
   try {
     const response = await axiosApi.post<RegisterResponse>(
       '/users/sessions',
-      loginMutation
+      loginMutation,
     );
     return response.data.user;
   } catch (error) {
@@ -73,7 +73,7 @@ export const loginWithGoogle = createAsyncThunk<
   try {
     const response = await axiosApi.post<RegisterResponse>(
       '/users/sessions/google',
-      { credential }
+      { credential },
     );
     return response.data.user;
   } catch (error) {
@@ -94,5 +94,5 @@ export const logout = createAsyncThunk<void, undefined, { state: RootState }>(
   async (_, { dispatch }) => {
     await axiosApi.delete('/users/sessions');
     dispatch(unsetUser());
-  }
+  },
 );

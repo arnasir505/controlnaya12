@@ -22,7 +22,7 @@ const PhotoSchema = new Schema<PhotoFields>(
       },
     },
   },
-  { versionKey: false }
+  { versionKey: false },
 );
 
 const Photo = model('Photo', PhotoSchema);

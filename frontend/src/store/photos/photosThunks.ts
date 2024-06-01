@@ -31,13 +31,13 @@ export const fetchPhotos = createAsyncThunk<Photo[], string | null>(
   async (author) => {
     try {
       const response = await axiosApi.get<Photo[]>(
-        author ? `/photos?author=${author}` : '/photos'
+        author ? `/photos?author=${author}` : '/photos',
       );
       return response.data;
     } catch (e) {
       throw e;
     }
-  }
+  },
 );
 
 export const fetchGalleryAuthor = createAsyncThunk<Author, string>(
@@ -49,7 +49,7 @@ export const fetchGalleryAuthor = createAsyncThunk<Author, string>(
     } catch (e) {
       throw e;
     }
-  }
+  },
 );
 
 export const deletePhoto = createAsyncThunk<void, string>(
@@ -60,7 +60,7 @@ export const deletePhoto = createAsyncThunk<void, string>(
     } catch (e) {
       throw e;
     }
-  }
+  },
 );
 
 export const deletePhotoByUser = createAsyncThunk<void, string>(
@@ -71,5 +71,5 @@ export const deletePhotoByUser = createAsyncThunk<void, string>(
     } catch (e) {
       throw e;
     }
-  }
+  },
 );

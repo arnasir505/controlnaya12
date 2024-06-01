@@ -5,7 +5,7 @@ import Photo from './models/Photo';
 
 const dropCollection = async (
   db: mongoose.Connection,
-  collectionName: string
+  collectionName: string,
 ) => {
   try {
     await db.dropCollection(collectionName);
@@ -48,7 +48,7 @@ const run = async () => {
       role: 'user',
       displayName: 'Millie',
       avatar: 'fixtures/user3.jpg',
-    }
+    },
   );
 
   await Photo.create(
@@ -81,7 +81,7 @@ const run = async () => {
       title: 'Chicago City',
       image: 'fixtures/chicago.jpg',
       author: user3._id,
-    }
+    },
   );
 
   await db.close();

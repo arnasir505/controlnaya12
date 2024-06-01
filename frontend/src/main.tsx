@@ -24,5 +24,5 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         </BrowserRouter>
       </PersistGate>
     </GoogleOAuthProvider>
-  </Provider>
+  </Provider>,
 );
