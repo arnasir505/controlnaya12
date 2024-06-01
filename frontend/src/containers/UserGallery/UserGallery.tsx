@@ -2,7 +2,10 @@ import { Box, Button, Container, Grid, Icon, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { fetchPhotos } from '../../store/photos/photosThunks';
+import {
+  fetchGalleryAuthor,
+  fetchPhotos,
+} from '../../store/photos/photosThunks';
 import {
   selectPhotos,
   selectPhotosLoading,
@@ -22,11 +25,17 @@ const UserGallery: React.FC = () => {
   const user = useAppSelector(selectUser);
   const [open, setOpen] = useState(false);
   const [photoUrl, setPhotoUrl] = useState('');
-
+  const [galleryAuthor, setGalleryAuthor] = useState({
+    _id: '',
+    displayName: '',
+  });
+  
   const getPhotosByAuthor = async () => {
     const author = searchParams.get('author');
     if (author) {
       await dispatch(fetchPhotos(author));
+      const result = await dispatch(fetchGalleryAuthor(author)).unwrap();
+      setGalleryAuthor(result);
     }
   };
 
@@ -48,25 +57,6 @@ const UserGallery: React.FC = () => {
   if (photos.length > 0 && !loading) {
     content = (
       <>
-        <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-          }}
-        >
-          <Typography variant='h4'>
-            {photos[0].author.displayName}'s Gallery
-          </Typography>
-          {photos[0].author._id === user?._id ? (
-            <Button
-              variant='outlined'
-              onClick={() => navigate('/photos/new')}
-            >
-              Upload new photo
-            </Button>
-          ) : null}
-        </Box>
         <Grid
           container
           rowSpacing={3}
@@ -105,21 +95,41 @@ const UserGallery: React.FC = () => {
     );
   } else if (photos.length === 0 && !loading) {
     content = (
-      <Box textAlign={'center'}>
+      <Box textAlign={'center'} sx={{ mt: 4 }}>
         <Icon sx={{ height: '50px', width: '50px' }}>
           <CollectionsIcon
             sx={{ height: '100%', width: '100%' }}
             color='action'
           />
         </Icon>
-        <Typography variant='h5' mt={1} color='#757575'>
+        <Typography variant='h5' mt={0} color='#757575'>
           No Photos Yet.
         </Typography>
       </Box>
     );
   }
 
-  return <Container sx={{ py: 5 }}>{content}</Container>;
+  return (
+    <Container sx={{ py: 5 }}>
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+        }}
+      >
+        <Typography variant='h4'>
+          {galleryAuthor.displayName}'s Gallery
+        </Typography>
+        {galleryAuthor._id === user?._id ? (
+          <Button variant='outlined' onClick={() => navigate('/photos/new')}>
+            Upload new photo
+          </Button>
+        ) : null}
+      </Box>
+      {content}
+    </Container>
+  );
 };
 
 export default UserGallery;

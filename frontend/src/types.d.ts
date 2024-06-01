@@ -12,10 +12,12 @@ export interface Photo {
   _id: string;
   title: string;
   image: string;
-  author: {
-    _id: string;
-    displayName: string;
-  };
+  author: Author;
+}
+
+export interface Author {
+  _id: string;
+  displayName: string;
 }
 
 export interface PhotoMutation {

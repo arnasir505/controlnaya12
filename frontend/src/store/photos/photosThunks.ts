@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axiosApi from '../../axiosApi';
-import { Photo, PhotoMutation, ValidationError } from '../../types';
+import { Author, Photo, PhotoMutation, ValidationError } from '../../types';
 import { isAxiosError } from 'axios';
 
 export const addNewPhoto = createAsyncThunk<
@@ -33,6 +33,18 @@ export const fetchPhotos = createAsyncThunk<Photo[], string | null>(
       const response = await axiosApi.get<Photo[]>(
         author ? `/photos?author=${author}` : '/photos'
       );
+      return response.data;
+    } catch (e) {
+      throw e;
+    }
+  }
+);
+
+export const fetchGalleryAuthor = createAsyncThunk<Author, string>(
+  'photos/fetchAuthor',
+  async (authorID) => {
+    try {
+      const response = await axiosApi.get<Author>('/users/' + authorID);
       return response.data;
     } catch (e) {
       throw e;

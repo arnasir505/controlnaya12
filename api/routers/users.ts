@@ -108,6 +108,29 @@ usersRouter.post('/sessions/google', async (req, res, next) => {
   }
 });
 
+usersRouter.get('/:id', async (req, res, next) => {
+  try {
+    const id = req.params.id;
+    if (!mongoose.Types.ObjectId.isValid(id.toString())) {
+      return res.status(422).send({ error: 'Invalid id!' });
+    }
+    const user = await User.findOne(
+      { _id: id },
+      {
+        token: 0,
+        email: 0,
+        role: 0,
+        avatar: 0,
+        googleID: 0,
+      }
+    );
+    if (!user) return res.status(404).send({ error: 'Not Found.' });
+    return res.send(user);
+  } catch (e) {
+    next(e);
+  }
+});
+
 usersRouter.delete('/sessions', async (req, res, next) => {
   try {
     const headerValue = req.get('Authorization');
