@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { fetchPhotos } from '../../store/photos/photosThunks';
 import { Box, Container, Grid, Icon, Typography } from '@mui/material';
@@ -9,13 +9,25 @@ import {
 import Spinner from '../../components/Spinner/Spinner';
 import { apiUrl } from '../../constants';
 import CollectionsIcon from '@mui/icons-material/Collections';
+import PhotoDialog from '../../components/Dialog/Dialog';
 
 const Home: React.FC = () => {
   const dispatch = useAppDispatch();
   const photos = useAppSelector(selectPhotos);
   const loading = useAppSelector(selectPhotosLoading);
+  const [open, setOpen] = useState(false);
+  const [photoUrl, setPhotoUrl] = useState('');
   const getPhotos = async () => {
     await dispatch(fetchPhotos());
+  };
+
+  const handleClickOpen = (url: string) => {
+    setOpen(true);
+    setPhotoUrl(url);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
   };
 
   useEffect(() => {
@@ -40,7 +52,13 @@ const Home: React.FC = () => {
             <img
               src={apiUrl + '/' + photo.image}
               alt={photo.title}
-              style={{ width: '100%', height: '220px', objectFit: 'cover' }}
+              style={{
+                width: '100%',
+                height: '220px',
+                objectFit: 'cover',
+                cursor: 'pointer',
+              }}
+              onClick={() => handleClickOpen(photo.image)}
             />
             <Typography variant='body1' sx={{ fontWeight: '600', mt: 0.5 }}>
               {photo.title}
@@ -50,6 +68,7 @@ const Home: React.FC = () => {
             </Typography>
           </Grid>
         ))}
+        <PhotoDialog open={open} onClose={handleClose} photo={photoUrl} />
       </Grid>
     );
   } else if (photos.length === 0 && !loading) {
