@@ -43,7 +43,7 @@ photosRouter.get('/', async (req, res, next) => {
       const photos = await Photo.find({ author: authorID.toString() });
       return res.send(photos);
     }
-    const photos = await Photo.find();
+    const photos = await Photo.find().populate('author', 'displayName');
     return res.send(photos);
   } catch (e) {
     next(e);

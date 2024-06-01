@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { Photo, ValidationError } from '../../types';
 import { fetchPhotos } from './photosThunks';
+import { RootState } from '../../app/store';
 
 interface PhotosState {
   photos: Photo[];
@@ -38,5 +39,13 @@ const photosSlice = createSlice({
       });
   },
 });
+
+export const selectPhotos = (state: RootState) => state.photos.photos;
+export const selectPhotosLoading = (state: RootState) =>
+  state.photos.photosLoading;
+export const selectAddPhotoError = (state: RootState) =>
+  state.photos.addPhotoError;
+export const selectAddPhotoLoading = (state: RootState) =>
+  state.photos.addPhotoLoading;
 
 export const photosReducer = photosSlice.reducer;
