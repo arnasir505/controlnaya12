@@ -10,6 +10,7 @@ import {
   persistStore,
 } from 'redux-persist';
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
+import { usersReducer } from '../store/users/usersSlice';
 
 const userPersistConfig = {
   key: 'spotify:users',
