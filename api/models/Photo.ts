@@ -6,7 +6,7 @@ const PhotoSchema = new Schema<PhotoFields>(
   {
     title: {
       type: String,
-      required: [true, 'Please enter title.']
+      required: [true, 'Please enter title.'],
     },
     image: {
       type: String,
