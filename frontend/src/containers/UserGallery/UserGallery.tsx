@@ -52,7 +52,7 @@ const UserGallery: React.FC = () => {
   };
 
   const onPhotoDelete = async (id: string) => {
-    let adminConfirm = confirm('Delete this cocktail?');
+    let adminConfirm = confirm('Delete this photo?');
     if (adminConfirm) {
       setDisabledBtn(id);
       await dispatch(deletePhoto(id));

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { fetchPhotos } from '../../store/photos/photosThunks';
+import { deletePhoto, fetchPhotos } from '../../store/photos/photosThunks';
 import { Box, Container, Grid, Icon, Typography } from '@mui/material';
 import {
   selectPhotos,
@@ -11,13 +11,17 @@ import { apiUrl } from '../../constants';
 import CollectionsIcon from '@mui/icons-material/Collections';
 import PhotoDialog from '../../components/Dialog/Dialog';
 import { Link } from 'react-router-dom';
+import { selectUser } from '../../store/users/usersSlice';
+import { LoadingButton } from '@mui/lab';
 
 const Home: React.FC = () => {
   const dispatch = useAppDispatch();
+  const user = useAppSelector(selectUser);
   const photos = useAppSelector(selectPhotos);
   const loading = useAppSelector(selectPhotosLoading);
   const [open, setOpen] = useState(false);
   const [photoUrl, setPhotoUrl] = useState('');
+  const [disabledBtn, setDisabledBtn] = useState('');
 
   const getPhotos = async () => {
     await dispatch(fetchPhotos(null));
@@ -30,6 +34,16 @@ const Home: React.FC = () => {
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const onPhotoDelete = async (id: string) => {
+    let adminConfirm = confirm('Delete this photo?');
+    if (adminConfirm) {
+      setDisabledBtn(id);
+      await dispatch(deletePhoto(id));
+      setDisabledBtn('');
+      void getPhotos();
+    }
   };
 
   useEffect(() => {
@@ -74,6 +88,17 @@ const Home: React.FC = () => {
                 {photo.author.displayName}
               </Link>
             </Typography>
+            {user?.role === 'admin' && (
+              <LoadingButton
+                variant='outlined'
+                color='error'
+                sx={{ mt: 1 }}
+                onClick={() => onPhotoDelete(photo._id)}
+                loading={photo._id === disabledBtn}
+              >
+                delete
+              </LoadingButton>
+            )}
           </Grid>
         ))}
         <PhotoDialog open={open} onClose={handleClose} photo={photoUrl} />
